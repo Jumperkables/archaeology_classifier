@@ -1,0 +1,36 @@
+program: main.py
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - ${args}
+  - --model=enetb7
+  - --dataset=camille
+  - --device=0
+  - --vt_bsz=100
+  - --shuffle
+  - --metadata=instance
+  - --transforms=resize
+  - --wandb
+  - --num_workers=0
+  - --preload
+  - --dropout=0.5
+  - --fc_intermediate=2048
+  - --epochs=250
+method: bayes
+metric:
+  name: test_instance_acc
+  goal: maximize
+parameters:
+  lr:
+    distribution: uniform
+    min: -6.0
+    max: -2.0
+  optimiser:
+    values: ["Adam", "SGD"]
+  bsz:
+    distribution: int_uniform
+    min: 32
+    max: 64
+  encoder_freeze:
+    values: [0,1]

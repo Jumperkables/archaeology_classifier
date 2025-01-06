@@ -1,0 +1,31 @@
+program: main.py
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - ${args}
+  - --model=enetb7
+  - --dataset=oriental-museum
+  - --device=0
+  - --vt_bsz=100
+  - --shuffle
+  - --metadata=instance
+  - --transforms=resize
+  - --wandb
+  - --num_workers=0
+  - --dropout=0.5
+  - --fc_intermediate=2048
+  - --epochs=50
+  - --encoder_freeze=0
+  - --bsz=32
+method: bayes
+metric:
+  name: test_instance_acc
+  goal: maximize
+parameters:
+  lr:
+    distribution: uniform
+    min: -6.0
+    max: -2.0
+  optimiser:
+    values: ["Adam", "SGD"]
